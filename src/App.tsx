@@ -49,6 +49,24 @@ function App() {
       prevGrid[position[0]][position[1] + 1] = 1
       setGrid(prevGrid)
       setPosition(positionFinder());
+    } else if (event.key === 'ArrowLeft' && position[1] > 0) {
+      const prevGrid = [...grid]
+      prevGrid[position[0]][position[1]] = 0
+      prevGrid[position[0]][position[1] - 1] = 1
+      setGrid(prevGrid)
+      setPosition(positionFinder());
+    } else if (event.key === 'ArrowDown' && position[0] < widthDepth.depth -1) {
+      const prevGrid = [...grid]
+      prevGrid[position[0]][position[1]] = 0
+      prevGrid[position[0] + 1][position[1]] = 1
+      setGrid(prevGrid)
+      setPosition(positionFinder());
+    } else if (event.key === 'ArrowUp' && position[0] > 0) {
+      const prevGrid = [...grid]
+      prevGrid[position[0]][position[1]] = 0
+      prevGrid[position[0] - 1][position[1]] = 1
+      setGrid(prevGrid)
+      setPosition(positionFinder());
     }
   };
 
