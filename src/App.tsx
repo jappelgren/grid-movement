@@ -1,10 +1,10 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import './App.css';
 
 function App() {
   const [grid, setGrid] = useState([[0]]);
   const [widthDepth, setWidthDepth] = useState({ width: 1, depth: 1 });
-  const [position, setPosition] = useState([5,5])
+  const [position, setPosition] = useState([5, 5]);
 
   function gridBuilder(width: number, depth: number): void {
     let gridArr: number[][] = [];
@@ -28,7 +28,7 @@ function App() {
     event.preventDefault();
     gridBuilder(widthDepth.width, widthDepth.depth);
     gridRef.current.focus();
-    setPosition(positionFinder());
+    
   };
 
   const positionFinder = () => {
@@ -41,31 +41,40 @@ function App() {
     }
   };
 
+  useEffect(() => {
+    setPosition(positionFinder());
+  }, [grid])
+
+  
+
   document.onkeydown = (event: any): void => {
     event = event || window.event;
-    if (event.key === 'ArrowRight' && position[1] < widthDepth.width -1) {
-      const prevGrid = [...grid]
-      prevGrid[position[0]][position[1]] = 0
-      prevGrid[position[0]][position[1] + 1] = 1
-      setGrid(prevGrid)
+    if (event.key === 'ArrowRight' && position[1] < widthDepth.width - 1) {
+      const prevGrid = [...grid];
+      prevGrid[position[0]][position[1]] = 0;
+      prevGrid[position[0]][position[1] + 1] = 1;
+      setGrid(prevGrid);
       setPosition(positionFinder());
     } else if (event.key === 'ArrowLeft' && position[1] > 0) {
-      const prevGrid = [...grid]
-      prevGrid[position[0]][position[1]] = 0
-      prevGrid[position[0]][position[1] - 1] = 1
-      setGrid(prevGrid)
+      const prevGrid = [...grid];
+      prevGrid[position[0]][position[1]] = 0;
+      prevGrid[position[0]][position[1] - 1] = 1;
+      setGrid(prevGrid);
       setPosition(positionFinder());
-    } else if (event.key === 'ArrowDown' && position[0] < widthDepth.depth -1) {
-      const prevGrid = [...grid]
-      prevGrid[position[0]][position[1]] = 0
-      prevGrid[position[0] + 1][position[1]] = 1
-      setGrid(prevGrid)
+    } else if (
+      event.key === 'ArrowDown' &&
+      position[0] < widthDepth.depth - 1
+    ) {
+      const prevGrid = [...grid];
+      prevGrid[position[0]][position[1]] = 0;
+      prevGrid[position[0] + 1][position[1]] = 1;
+      setGrid(prevGrid);
       setPosition(positionFinder());
     } else if (event.key === 'ArrowUp' && position[0] > 0) {
-      const prevGrid = [...grid]
-      prevGrid[position[0]][position[1]] = 0
-      prevGrid[position[0] - 1][position[1]] = 1
-      setGrid(prevGrid)
+      const prevGrid = [...grid];
+      prevGrid[position[0]][position[1]] = 0;
+      prevGrid[position[0] - 1][position[1]] = 1;
+      setGrid(prevGrid);
       setPosition(positionFinder());
     }
   };
@@ -105,20 +114,22 @@ function App() {
           <button type="submit">Make Grid</button>
         </form>
       </header>
-      <section ref={gridRef} className="grid-container">
-        {grid.map((row, i) => {
-          return (
-            <section key={i} className="row">
-              {grid[i].map((cell, i) => {
-                return cell === 1 ? (
-                  <div key={i} className="cell blue"></div>
-                ) : (
-                  <div key={i} className="cell"></div>
-                );
-              })}
-            </section>
-          );
-        })}
+      <section ref={gridRef} className="main-container">
+        <div className="grid-container">
+          {grid.map((row, i) => {
+            return (
+              <section key={i} className="row">
+                {grid[i].map((cell, i) => {
+                  return cell === 1 ? (
+                    <div key={i} className="cell blue"></div>
+                  ) : (
+                    <div key={i} className="cell"></div>
+                  );
+                })}
+              </section>
+            );
+          })}
+        </div>
       </section>
     </main>
   );
